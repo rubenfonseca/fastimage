@@ -16,3 +16,39 @@ the size and type of the image, it stops the download.
 
     $ go get github.com/rubenfonseca/fastimage
 
+## Usage
+
+For instance, this is a big 10MB JPEG image on wikipedia:
+
+
+	url := "http://upload.wikimedia.org/wikipedia/commons/9/9a/SKA_dishes_big.jpg"
+
+    fastimage.Debug()
+	imagetype, size, err := fastimage.DetectImageType(url)
+	if err != nil {
+		// Something went wrong, http failed? not an image?
+		panic(err)
+	}
+
+	switch imagetype {
+	case fastimage.JPEG:
+		log.Printf("JPEG")
+	case fastimage.PNG:
+		log.Printf("PNG")
+	case fastimage.GIF:
+		log.Printf("GIF")
+	}
+
+	log.Printf("Image size: %v", size)
+
+At the end, you can read something like this:
+
+    Closed after reading just 17863 bytes out of 10001439 bytes
+
+# Project details
+
+### License
+
+fastimage is under MIT license. See the [LICENSE][license] file for details.
+
+[license]: https://github.com/rubenfonseca/fastimage/blob/master/LICENSE
