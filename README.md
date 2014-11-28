@@ -1,6 +1,6 @@
 # fastimage
 
-[![GoDoc](https://godoc.org/github.com/rubenfonseca/fastimage?status.png)](https://godoc.org/github.com/rubenfonseca/fastimage) [![Build Status](https://secure.travis-ci.org/rubenfonseca/fastimage.png?branch=master)](http://travis-ci.org/rubenfonseca/fastimage)
+[![GoDoc](https://godoc.org/github.com/rubenfonseca/fastimage?status.png)](https://godoc.org/github.com/rubenfonseca/fastimage) [![Build Status](https://travis-ci.org/rubenfonseca/fastimage.svg?branch=master)](http://travis-ci.org/rubenfonseca/fastimage)
 
 by Ruben Fonseca (@rubenfonseca)
 
