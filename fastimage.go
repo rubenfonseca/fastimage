@@ -37,9 +37,9 @@ func DetectImageType(uri string) (ImageType, *ImageSize, error) {
 		for _, ImageTypeParser := range imageTypeParsers {
 			if ImageTypeParser.Detect(buffer.Bytes()) {
 				t := ImageTypeParser.Type()
-				size, _ := ImageTypeParser.GetSize(buffer.Bytes())
+				size, err := ImageTypeParser.GetSize(buffer.Bytes())
 
-				if size != nil {
+				if err == nil {
 					logger.Printf("Found image type %v with size %v", t, size)
 					return t, size, nil
 				}

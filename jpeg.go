@@ -31,17 +31,17 @@ func (j imageJPEG) GetSize(buffer []byte) (*ImageSize, error) {
 		return nil, errors.New("Insufficient data")
 	}
 
-	return parseJPEGData(buffer, 2, nextSegment), nil
+	return parseJPEGData(buffer, 2, nextSegment)
 }
 
-func parseJPEGData(buffer []byte, offset int, segment jpegHeaderSegment) *ImageSize {
+func parseJPEGData(buffer []byte, offset int, segment jpegHeaderSegment) (*ImageSize, error) {
 	logger.Printf("parseJPEGData: buffer size: %v offset: %v segment %v", len(buffer), offset, segment)
 	if segment == eioSegment ||
 		(len(buffer) <= offset+1) ||
 		((len(buffer) <= offset+2) && segment == skipSegment) ||
 		((len(buffer) <= offset+7) && segment == parseSegment) {
 		logger.Printf("BAILING NOT ENOUGHTDATA")
-		return nil
+		return nil, errors.New("Not enough data")
 	}
 
 	switch segment {
@@ -78,9 +78,9 @@ func parseJPEGData(buffer []byte, offset int, segment jpegHeaderSegment) *ImageS
 		width := readUint16(buffer[offset+6 : offset+8])
 		height := readUint16(buffer[offset+4 : offset+6])
 
-		return &ImageSize{Width: uint32(width), Height: uint32(height)}
+		return &ImageSize{Width: uint32(width), Height: uint32(height)}, nil
 	default:
-		return nil
+		return nil, errors.New("Can't detect jpeg segment.")
 	}
 }
 

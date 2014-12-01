@@ -10,6 +10,8 @@ const (
 	PNG
 	// JPEG represents a JPEG image
 	JPEG
+	// BMP represents a BMP image
+	BMP
 	// Unknown represents an unknown image type
 	Unknown
 )

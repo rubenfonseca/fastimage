@@ -82,3 +82,22 @@ func TestGIFImage(t *testing.T) {
 		t.Error("Image height is wrong")
 	}
 }
+
+func TestBMPImage(t *testing.T) {
+	t.Parallel()
+
+	url := "http://www.ac-grenoble.fr/ien.vienne1-2/spip/IMG/bmp_Image004.bmp"
+
+	imagetype, size, err := DetectImageType(url)
+	if err != nil {
+		t.Error("Failed to detect image type")
+	}
+
+	if imagetype != BMP {
+		t.Error("Image is not BMP")
+	}
+
+	if size != nil {
+		t.Error("We can't detect BMP size yet")
+	}
+}
