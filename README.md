@@ -5,11 +5,11 @@
 by Ruben Fonseca (@[rubenfonseca](http://twitter.com/rubenfonseca))
 
 Golang implementation of [fastimage](https://pypi.python.org/pypi/fastimage/0.2.1).
-Finds the size or type of an image given its uri by fetching as little as needed.
+Finds the type and/or size of an image given its uri by fetching as little as needed.
 
 ## How?
 
-fastimage parses the image data as it is downlaoded. As soon as it finds out
+fastimage parses the image data as it is downloaded. As soon as it finds out
 the size and type of the image, it stops the download.
 
 ## Install
@@ -44,6 +44,17 @@ For instance, this is a big 10MB JPEG image on wikipedia:
 At the end, you can read something like this:
 
     Closed after reading just 17863 bytes out of 10001439 bytes
+
+## Supported file types
+
+| File type | Can detect type? | Can detect size? |
+|-----------|:----------------:|:----------------:|
+| PNG       | Yes              | Yes              |
+| JPEG      | Yes              | Yes              |
+| GIF       | Yes              | Yes              |
+| BMP       | Yes              | No               |
+| TIFF      | Yes              | No               |
+
 
 # Project details
 
