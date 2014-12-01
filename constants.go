@@ -12,6 +12,8 @@ const (
 	JPEG
 	// BMP represents a BMP image
 	BMP
+	// TIFF represents a TIFF image
+	TIFF
 	// Unknown represents an unknown image type
 	Unknown
 )

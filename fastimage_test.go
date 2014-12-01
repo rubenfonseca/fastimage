@@ -101,3 +101,23 @@ func TestBMPImage(t *testing.T) {
 		t.Error("We can't detect BMP size yet")
 	}
 }
+
+func TestTIFFImage(t *testing.T) {
+	t.Parallel()
+
+	url := "http://www.fileformat.info/format/tiff/sample/c44cf1326c2240d38e9fca073bd7a805/download"
+
+	imagetype, size, err := DetectImageType(url)
+	if err != nil {
+		t.Error("Failed to detect image type")
+	}
+
+	if imagetype != TIFF {
+		t.Error("Image is not TIFF")
+	}
+
+	if size != nil {
+		t.Error("We can't detect TIFF size yet")
+	}
+
+}
