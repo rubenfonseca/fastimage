@@ -78,7 +78,7 @@ func TestGIFImage(t *testing.T) {
 		t.Error("Image width is wrong")
 	}
 
-	if size.Height != 247 {
+	if size.Height != 286 {
 		t.Error("Image height is wrong")
 	}
 }
