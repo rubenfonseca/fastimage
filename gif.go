@@ -24,8 +24,8 @@ func (g imageGIF) GetSize(buffer []byte) (*ImageSize, error) {
 	imageSize := ImageSize{}
 	slice := buffer[6 : 6+4]
 
-	imageSize.Width = uint32(readULint16(slice[:4]))
-	imageSize.Height = uint32(readULint16(slice[4:8]))
+	imageSize.Width = uint32(readULint16(slice[:2]))
+	imageSize.Height = uint32(readULint16(slice[2:4]))
 
 	return &imageSize, nil
 }
