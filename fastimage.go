@@ -15,7 +15,7 @@ func DetectImageType(uri string) (ImageType, *ImageSize, error) {
 	logger.Printf("Opening HTTP stream")
 	resp, err := http.Get(uri)
 
-	defer resp.Body.Close()
+	defer closeHTTPStream(resp)
 
 	if err != nil {
 		return Unknown, nil, err
@@ -24,8 +24,8 @@ func DetectImageType(uri string) (ImageType, *ImageSize, error) {
 	return DetectImageTypeFromResponse(resp)
 }
 
-// DetectImageTypeFromResponse is a secondary function used to detect the type and size
-// of a remote image represented by the resp.
+// DetectImageTypeFromResponse is a secondary function used to detect the type
+// and size of a remote image represented by the resp.
 // This way you can create your own request and then pass it here.
 // Check examples from http://golang.org/pkg/net/http/
 //
@@ -70,4 +70,9 @@ func readToBuffer(body io.Reader, buffer *bytes.Buffer) error {
 	buffer.Write(chunk[:count])
 
 	return err
+}
+
+func closeHTTPStream(http *http.Response) {
+	logger.Printf("Closing HTTP Stream")
+	http.Body.Close()
 }
