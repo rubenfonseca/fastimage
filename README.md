@@ -39,6 +39,7 @@ For instance, this is a big 10MB JPEG image on wikipedia:
 		log.Printf("GIF")
 	}
 
+	log.Printf("Image type: %s", imagetype.String())
 	log.Printf("Image size: %v", size)
 
 At the end, you can read something like this:
