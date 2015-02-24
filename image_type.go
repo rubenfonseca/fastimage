@@ -3,6 +3,7 @@ package fastimage
 // ImageType represents the type of the image detected, or `Unknown`.
 type ImageType uint
 
+//go:generate stringer -type=ImageType -output=image_type_string.go
 const (
 	// GIF represents a GIF image
 	GIF ImageType = iota
@@ -17,9 +18,3 @@ const (
 	// Unknown represents an unknown image type
 	Unknown
 )
-
-// ImageSize holds the width and height of an image
-type ImageSize struct {
-	Width  uint32
-	Height uint32
-}
