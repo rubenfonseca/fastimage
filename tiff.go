@@ -17,5 +17,5 @@ func (t imageTIFF) GetSize(buffer []byte) (*ImageSize, error) {
 }
 
 func init() {
-	register("tiff", &imageTIFF{})
+	register(&imageTIFF{})
 }

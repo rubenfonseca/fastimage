@@ -16,11 +16,12 @@ type ImageTypeParser interface {
 
 var imageTypeParsers = make(map[string]ImageTypeParser)
 
-func register(name string, imageTypeParser ImageTypeParser) {
+func register(imageTypeParser ImageTypeParser) {
 	if imageTypeParser == nil {
 		panic("ImageTypeParser: Register image type is nil")
 	}
 
+	name := imageTypeParser.Type().String()
 	if _, dup := imageTypeParsers[name]; dup {
 		panic("ImageTypeParser: Register called twice for type " + name)
 	}

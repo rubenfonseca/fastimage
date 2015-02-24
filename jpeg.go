@@ -85,5 +85,5 @@ func parseJPEGData(buffer []byte, offset int, segment jpegHeaderSegment) (*Image
 }
 
 func init() {
-	register("jpeg", &imageJPEG{})
+	register(&imageJPEG{})
 }

@@ -17,5 +17,5 @@ func (b imageBMP) GetSize(buffer []byte) (*ImageSize, error) {
 }
 
 func init() {
-	register("bmp", &imageBMP{})
+	register(&imageBMP{})
 }

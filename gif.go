@@ -31,5 +31,5 @@ func (g imageGIF) GetSize(buffer []byte) (*ImageSize, error) {
 }
 
 func init() {
-	register("gif", &imageGIF{})
+	register(&imageGIF{})
 }

@@ -35,5 +35,5 @@ func (p imagePNG) GetSize(buffer []byte) (*ImageSize, error) {
 }
 
 func init() {
-	register("png", &imagePNG{})
+	register(&imagePNG{})
 }
