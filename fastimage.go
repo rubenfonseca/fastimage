@@ -15,11 +15,11 @@ func DetectImageType(uri string) (ImageType, *ImageSize, error) {
 	logger.Printf("Opening HTTP stream")
 	resp, err := http.Get(uri)
 
-	defer closeHTTPStream(resp)
-
 	if err != nil {
 		return Unknown, nil, err
 	}
+
+	defer closeHTTPStream(resp)
 
 	return DetectImageTypeFromResponse(resp)
 }
