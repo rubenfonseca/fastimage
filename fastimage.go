@@ -31,13 +31,23 @@ func DetectImageType(uri string) (ImageType, *ImageSize, error) {
 //
 // Only check ImageType and ImageSize if error is not nil.
 func DetectImageTypeFromResponse(resp *http.Response) (ImageType, *ImageSize, error) {
-	logger.Printf("Starting operation")
+	logger.Printf("Response content-length: %v bytes", resp.ContentLength)
 
+	return DetectImageTypeFromReader(resp.Body)
+
+}
+
+// DetectImageTypeFromReader detects the type and size from a stream of bytes.
+//
+// Only check ImageType and ImageSize if error is not nil.
+func DetectImageTypeFromReader(r io.Reader) (ImageType, *ImageSize, error) {
 	buffer := bytes.Buffer{}
-	defer logger.Printf("Ended after reading %v bytes out of %v bytes", buffer.Len(), resp.ContentLength)
+
+	logger.Printf("Starting operation")
+	defer logger.Printf("Ended after reading %v bytes", buffer.Len())
 
 	for {
-		err := readToBuffer(resp.Body, &buffer)
+		err := readToBuffer(r, &buffer)
 		if buffer.Len() < 2 {
 			continue
 		}
