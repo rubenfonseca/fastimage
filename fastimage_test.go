@@ -2,6 +2,17 @@ package fastimage
 
 import "testing"
 
+func TestTimeout(t *testing.T) {
+	url := "http://osmanias.com/data/file/all_gallery/3076878222_lLrpiAG6_e0780a92ec70d60b8ab47fde6575fba65120559a.jpg"
+
+	SetTimeout(1)
+	_, _, err := DetectImageType(url)
+	SetTimeout(0)
+	if err == nil {
+		t.Error("Timeout expected, but not occurred")
+	}
+}
+
 func TestPNGImage(t *testing.T) {
 	t.Parallel()
 

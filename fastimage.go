@@ -4,7 +4,23 @@ import (
 	"bytes"
 	"io"
 	"net/http"
+	"time"
 )
+
+const defaultTimeout = time.Duration(5000) * time.Millisecond
+
+// Request timeout
+var timeout = defaultTimeout
+
+// SetTimeout sets a time limit (millisecond) for requests.
+//
+// If ms < 1, defaultTimeout(5000) is set.
+func SetTimeout(ms int) {
+	if ms < 1 {
+		timeout = defaultTimeout
+	}
+	timeout = time.Duration(ms) * time.Millisecond
+}
 
 // DetectImageType is the main function used to detect the type and size
 // of a remote image represented by the url.
@@ -13,7 +29,8 @@ import (
 func DetectImageType(uri string) (ImageType, *ImageSize, error) {
 
 	logger.Printf("Opening HTTP stream")
-	resp, err := http.Get(uri)
+	client := &http.Client{Timeout: timeout}
+	resp, err := client.Get(uri)
 
 	if err != nil {
 		return Unknown, nil, err
