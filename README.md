@@ -46,6 +46,12 @@ At the end, you can read something like this:
 
     Closed after reading just 17863 bytes out of 10001439 bytes
 
+If you want to set request timeout for url:
+
+    // the second argument is request timeout (milliseconds).
+    // FYI, DetectImageType() uses default timeout 5000ms.
+    imagetype, size, err := fastimage.DetectImageTypeWithTimeout(url, 2000)
+
 ## Supported file types
 
 | File type | Can detect type? | Can detect size? |
