@@ -13,8 +13,8 @@ func TestRegisterNilImageType(t *testing.T) {
 
 func TestRegisterRepeatedType(t *testing.T) {
 	f := func() {
-		image_type := imageGIF{}
-		register(image_type)
+		imageType := imageGIF{}
+		register(imageType)
 	}
 
 	if funcDidPanic, _ := didPanic(f); !funcDidPanic {
