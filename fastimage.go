@@ -2,6 +2,7 @@ package fastimage
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"net/http"
 	"time"
@@ -56,34 +57,62 @@ func DetectImageTypeFromResponse(resp *http.Response) (ImageType, *ImageSize, er
 //
 // Only check ImageType and ImageSize if error is not nil.
 func DetectImageTypeFromReader(r io.Reader) (ImageType, *ImageSize, error) {
-	buffer := bytes.Buffer{}
+	type imageInfo struct {
+		itype ImageType
+		isize *ImageSize
+		err   error
+	}
 
-	logger.Printf("Starting operation")
-	defer logger.Printf("Ended after reading %v bytes", buffer.Len())
+	ch := make(chan imageInfo)
 
-	for {
-		err := readToBuffer(r, &buffer)
-		if buffer.Len() < 2 {
-			continue
-		}
+	quit := false
+	go func() {
+		buffer := bytes.Buffer{}
 
-		if err != nil {
-			logger.Printf("Bailing out because of err %v", err)
-			return Unknown, nil, err
-		}
+		logger.Printf("Starting operation")
+		defer logger.Printf("Ended after reading %v bytes", buffer.Len())
 
-		for _, ImageTypeParser := range imageTypeParsers {
-			if ImageTypeParser.Detect(buffer.Bytes()) {
-				t := ImageTypeParser.Type()
-				size, err := ImageTypeParser.GetSize(buffer.Bytes())
+		for {
+			if quit {
+				logger.Println("Quit signal received in DetectImageTypeFromReader")
+				return
+			}
+			err := readToBuffer(r, &buffer)
+			if buffer.Len() < 2 {
+				continue
+			}
 
-				if err == nil {
-					logger.Printf("Found image type %v with size %v", t, size)
-					return t, size, nil
+			if err != nil {
+				logger.Printf("Bailing out because of err %v", err)
+				ch <- imageInfo{Unknown, nil, err}
+				return
+			}
+
+			for _, ImageTypeParser := range imageTypeParsers {
+				if ImageTypeParser.Detect(buffer.Bytes()) {
+					t := ImageTypeParser.Type()
+					size, err := ImageTypeParser.GetSize(buffer.Bytes())
+
+					if err == nil {
+						logger.Printf("Found image type %v with size %v", t, size)
+						ch <- imageInfo{t, size, nil}
+						return
+					}
+					break
 				}
-				break
 			}
 		}
+	}()
+
+	timedOut := time.After(time.Duration(500) * time.Millisecond)
+	select {
+	case ii := <-ch:
+		quit = true
+		return ii.itype, ii.isize, ii.err
+	case <-timedOut:
+		logger.Println("Timeout in DetectImageTypeFromReader")
+		quit = true
+		return Unknown, nil, errors.New("Timeout in DetectImageTypeFromReader")
 	}
 }
 
