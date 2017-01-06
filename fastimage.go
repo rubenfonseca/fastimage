@@ -26,14 +26,13 @@ func DetectImageType(uri string) (ImageType, *ImageSize, error) {
 // If timeout < 1, default timeout 5000 is used.
 func DetectImageTypeWithTimeout(uri string, timeout uint) (ImageType, *ImageSize, error) {
 	logger.Printf("Opening HTTP stream")
-	t := time.Duration(timeout) * time.Millisecond
-	client := &http.Client{Timeout: t}
+	client := &http.Client{
+		Timeout: time.Duration(timeout) * time.Millisecond,
+	}
 	resp, err := client.Get(uri)
-
 	if err != nil {
 		return Unknown, nil, err
 	}
-
 	defer closeHTTPStream(resp)
 
 	return DetectImageTypeFromResponse(resp)
@@ -47,9 +46,7 @@ func DetectImageTypeWithTimeout(uri string, timeout uint) (ImageType, *ImageSize
 // Only check ImageType and ImageSize if error is not nil.
 func DetectImageTypeFromResponse(resp *http.Response) (ImageType, *ImageSize, error) {
 	logger.Printf("Response content-length: %v bytes", resp.ContentLength)
-
 	return DetectImageTypeFromReader(resp.Body)
-
 }
 
 // DetectImageTypeFromReader detects the type and size from a stream of bytes.
@@ -65,6 +62,9 @@ func DetectImageTypeFromReader(r io.Reader) (ImageType, *ImageSize, error) {
 		err := readToBuffer(r, &buffer)
 		if buffer.Len() < 2 {
 			continue
+		}
+		if buffer.Len() > 20000 {
+			return Unknown, nil, err
 		}
 
 		if err != nil {
