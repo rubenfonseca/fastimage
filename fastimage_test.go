@@ -1,6 +1,8 @@
 package fastimage
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestPNGImage(t *testing.T) {
 	t.Parallel()
@@ -125,9 +127,13 @@ func TestTIFFImage(t *testing.T) {
 func TestCustomTimeout(t *testing.T) {
 	t.Parallel()
 
-	url := "http://osmanias.com/data/file/all_gallery/3076878222_lLrpiAG6_e0780a92ec70d60b8ab47fde6575fba65120559a.jpg"
+	// url := "http://osmanias.com/data/file/all_gallery/3076878222_lLrpiAG6_e0780a92ec70d60b8ab47fde6575fba65120559a.jpg"
+	url := "http://upload.wikimedia.org/wikipedia/commons/9/9a/SKA_dishes_big.jpg"
 
-	_, _, err := DetectImageTypeWithTimeout(url, 1)
+	imagetype, size, err := DetectImageTypeWithTimeout(url, 500)
+	t.Logf("imageType: %v", imagetype)
+	t.Logf("size: %v", size)
+	t.Logf("error: %v", err)
 	if err == nil {
 		t.Error("Timeout expected, but not occurred")
 	}
