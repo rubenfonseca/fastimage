@@ -60,15 +60,16 @@ func DetectImageTypeFromReader(r io.Reader) (ImageType, *ImageSize, error) {
 
 	for {
 		err := readToBuffer(r, &buffer)
+		if err != nil {
+			logger.Printf("Bailing out because of err %v", err)
+			return Unknown, nil, err
+		}
+
 		if buffer.Len() < 2 {
 			continue
 		}
 		if buffer.Len() > 20000 {
-			return Unknown, nil, err
-		}
-
-		if err != nil {
-			logger.Printf("Bailing out because of err %v", err)
+			logger.Println("Type not found until buffer read exceeds 20000 bytes")
 			return Unknown, nil, err
 		}
 
