@@ -128,7 +128,8 @@ func TestCustomTimeout(t *testing.T) {
 	t.Parallel()
 
 	// url := "http://osmanias.com/data/file/all_gallery/3076878222_lLrpiAG6_e0780a92ec70d60b8ab47fde6575fba65120559a.jpg"
-	url := "http://upload.wikimedia.org/wikipedia/commons/9/9a/SKA_dishes_big.jpg"
+	// url := "http://upload.wikimedia.org/wikipedia/commons/9/9a/SKA_dishes_big.jpg"
+	url := "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png"
 
 	imagetype, size, err := DetectImageTypeWithTimeout(url, 500)
 	t.Logf("imageType: %v", imagetype)
