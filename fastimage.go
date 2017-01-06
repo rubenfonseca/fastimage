@@ -63,6 +63,9 @@ func DetectImageTypeFromReader(r io.Reader) (ImageType, *ImageSize, error) {
 		if buffer.Len() < 2 {
 			continue
 		}
+		if buffer.Len() > 20000 {
+			return Unknown, nil, err
+		}
 
 		if err != nil {
 			logger.Printf("Bailing out because of err %v", err)
@@ -78,6 +81,7 @@ func DetectImageTypeFromReader(r io.Reader) (ImageType, *ImageSize, error) {
 					logger.Printf("Found image type %v with size %v", t, size)
 					return t, size, nil
 				}
+				break
 			}
 		}
 	}
