@@ -99,8 +99,12 @@ func TestBMPImage(t *testing.T) {
 		t.Error("Image is not BMP")
 	}
 
-	if size != nil {
-		t.Error("We can't detect BMP size yet")
+	if size.Width != 477 {
+		t.Errorf("Image width is wrong. Expected 477, got %d", size.Width)
+	}
+
+	if size.Height != 358 {
+		t.Errorf("Image height is wrong. Expected 358, got %d", size.Height)
 	}
 }
 

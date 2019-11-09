@@ -1,5 +1,9 @@
 package fastimage
 
+import (
+	"errors"
+)
+
 type imageBMP struct{}
 
 func (b imageBMP) Type() ImageType {
@@ -12,8 +16,15 @@ func (b imageBMP) Detect(buffer []byte) bool {
 }
 
 func (b imageBMP) GetSize(buffer []byte) (*ImageSize, error) {
-	// TODO: We currently don't detect BMP size, so just return nothing
-	return nil, nil
+	if len(buffer) < 28 {
+		return nil, errors.New("Insufficient data")
+	}
+
+	imageSize := ImageSize{}
+	imageSize.Width = readUInt32(buffer[18:22])
+	imageSize.Height = readUInt32(buffer[22:26])
+
+	return &imageSize, nil
 }
 
 func init() {
