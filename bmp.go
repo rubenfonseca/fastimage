@@ -1,6 +1,8 @@
 package fastimage
 
 import (
+	"bytes"
+	"encoding/binary"
 	"errors"
 )
 
@@ -15,14 +17,26 @@ func (b imageBMP) Detect(buffer []byte) bool {
 	return string(firstTwoBytes) == "BM"
 }
 
-func (b imageBMP) GetSize(buffer []byte) (*ImageSize, error) {
-	if len(buffer) < 28 {
+func (b imageBMP) GetSize(byteArray []byte) (*ImageSize, error) {
+	if len(byteArray) < 28 {
 		return nil, errors.New("Insufficient data")
 	}
 
-	imageSize := ImageSize{}
-	imageSize.Width = readUInt32(buffer[18:22])
-	imageSize.Height = readUInt32(buffer[22:26])
+	buffer := bytes.NewBuffer(byteArray)
+	buffer.Next(14) // skip BITMAPFILEHEADER
+
+	var headerType uint32
+	binary.Read(buffer, binary.LittleEndian, &headerType)
+
+	var imageSize ImageSize
+	if headerType == 12 {
+		// handle Windows BMP v2 or OS/2 BMP v1
+		imageSize.Width = uint32(readULint16(buffer.Next(2)))
+		imageSize.Height = uint32(readULint16(buffer.Next(2)))
+	} else {
+		binary.Read(buffer, binary.LittleEndian, &imageSize.Width)
+		binary.Read(buffer, binary.LittleEndian, &imageSize.Height)
+	}
 
 	return &imageSize, nil
 }

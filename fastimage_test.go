@@ -85,29 +85,6 @@ func TestGIFImage(t *testing.T) {
 	}
 }
 
-func TestBMPImage(t *testing.T) {
-	t.Parallel()
-
-	url := "http://www.ac-grenoble.fr/ien.vienne1-2/spip/IMG/bmp_Image004.bmp"
-
-	imagetype, size, err := DetectImageType(url)
-	if err != nil {
-		t.Error("Failed to detect image type")
-	}
-
-	if imagetype != BMP {
-		t.Error("Image is not BMP")
-	}
-
-	if size.Width != 477 {
-		t.Errorf("Image width is wrong. Expected 477, got %d", size.Width)
-	}
-
-	if size.Height != 358 {
-		t.Errorf("Image height is wrong. Expected 358, got %d", size.Height)
-	}
-}
-
 func TestTIFFImage(t *testing.T) {
 	t.Parallel()
 
