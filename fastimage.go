@@ -89,7 +89,7 @@ func DetectImageTypeFromReader(r io.Reader) (ImageType, *ImageSize, error) {
 }
 
 func readToBuffer(body io.Reader, buffer *bytes.Buffer) error {
-	chunk := make([]byte, 8)
+	chunk := make([]byte, 64)
 	count, err := body.Read(chunk)
 
 	logger.Printf("Read %v bytes", count)

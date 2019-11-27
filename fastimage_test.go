@@ -89,6 +89,7 @@ func TestTIFFImage(t *testing.T) {
 	t.Parallel()
 
 	url := "http://www.fileformat.info/format/tiff/sample/c44cf1326c2240d38e9fca073bd7a805/download"
+	expectedSize := ImageSize{1419, 1001}
 
 	imagetype, size, err := DetectImageType(url)
 	if err != nil {
@@ -99,10 +100,13 @@ func TestTIFFImage(t *testing.T) {
 		t.Error("Image is not TIFF")
 	}
 
-	if size != nil {
-		t.Error("We can't detect TIFF size yet")
+	if size.Width != expectedSize.Width {
+		t.Errorf("Image width is wrong. Expected %d, got %d", expectedSize.Width, size.Width)
 	}
 
+	if size.Height != expectedSize.Height {
+		t.Errorf("Image height is wrong. Expected %d, got %d", expectedSize.Height, size.Height)
+	}
 }
 
 func TestCustomTimeout(t *testing.T) {

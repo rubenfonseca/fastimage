@@ -60,7 +60,7 @@ If you want to set request timeout for url:
 | JPEG      | Yes              | Yes              |
 | GIF       | Yes              | Yes              |
 | BMP       | Yes              | Yes              |
-| TIFF      | Yes              | No               |
+| TIFF      | Yes              | Yes              |
 
 
 # Project details
