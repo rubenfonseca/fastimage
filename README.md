@@ -59,8 +59,8 @@ If you want to set request timeout for url:
 | PNG       | Yes              | Yes              |
 | JPEG      | Yes              | Yes              |
 | GIF       | Yes              | Yes              |
-| BMP       | Yes              | No               |
-| TIFF      | Yes              | No               |
+| BMP       | Yes              | Yes              |
+| TIFF      | Yes              | Yes              |
 
 
 # Project details

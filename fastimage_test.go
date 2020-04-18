@@ -85,29 +85,11 @@ func TestGIFImage(t *testing.T) {
 	}
 }
 
-func TestBMPImage(t *testing.T) {
-	t.Parallel()
-
-	url := "http://www.ac-grenoble.fr/ien.vienne1-2/spip/IMG/bmp_Image004.bmp"
-
-	imagetype, size, err := DetectImageType(url)
-	if err != nil {
-		t.Error("Failed to detect image type")
-	}
-
-	if imagetype != BMP {
-		t.Error("Image is not BMP")
-	}
-
-	if size != nil {
-		t.Error("We can't detect BMP size yet")
-	}
-}
-
 func TestTIFFImage(t *testing.T) {
 	t.Parallel()
 
 	url := "http://www.fileformat.info/format/tiff/sample/c44cf1326c2240d38e9fca073bd7a805/download"
+	expectedSize := ImageSize{1419, 1001}
 
 	imagetype, size, err := DetectImageType(url)
 	if err != nil {
@@ -118,16 +100,19 @@ func TestTIFFImage(t *testing.T) {
 		t.Error("Image is not TIFF")
 	}
 
-	if size != nil {
-		t.Error("We can't detect TIFF size yet")
+	if size.Width != expectedSize.Width {
+		t.Errorf("Image width is wrong. Expected %d, got %d", expectedSize.Width, size.Width)
 	}
 
+	if size.Height != expectedSize.Height {
+		t.Errorf("Image height is wrong. Expected %d, got %d", expectedSize.Height, size.Height)
+	}
 }
 
 func TestCustomTimeout(t *testing.T) {
 	t.Parallel()
 
-	url := "http://loremflickr.com/500/500"
+	url := "http://slowwly.robertomurray.co.uk/delay/10000/url/http://loremflickr.com/500/500"
 
 	imagetype, size, err := DetectImageTypeWithTimeout(url, 1000)
 	t.Logf("imageType: %v", imagetype)
