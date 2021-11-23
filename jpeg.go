@@ -31,7 +31,7 @@ func (j imageJPEG) GetSize(buffer []byte) (*ImageSize, error) {
 		return nil, errors.New("Insufficient data")
 	}
 
-	return parseJPEGData(buffer, 2, nextSegment)
+	return parseJPEGData(buffer, 1, nextSegment)
 }
 
 func parseJPEGData(buffer []byte, offset int, segment jpegHeaderSegment) (*ImageSize, error) {
