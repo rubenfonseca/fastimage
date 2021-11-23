@@ -4,10 +4,16 @@ import (
 	"bytes"
 	"io"
 	"net/http"
+	"os"
+	"strconv"
 	"time"
 )
 
 const defaultTimeout = uint(time.Duration(5000) * time.Millisecond)
+
+// Exif metadata are restricted in size to 64 kB in JPEG images because according
+// to the specification this information must be contained within a single JPEG APP1 segment
+const defaultMaxBufferSize = 64000
 
 // DetectImageType is the main function used to detect the type and size
 // of a remote image represented by the url.
@@ -68,8 +74,14 @@ func DetectImageTypeFromReader(r io.Reader) (ImageType, *ImageSize, error) {
 		if buffer.Len() < 2 {
 			continue
 		}
-		if buffer.Len() > 20000 {
-			logger.Println("Type not found until buffer read exceeds 20000 bytes")
+
+		maxBufferSize, err := strconv.Atoi(os.Getenv("MAX_BUFFER_SIZE"))
+		if err != nil {
+			maxBufferSize = defaultMaxBufferSize
+		}
+
+		if buffer.Len() > maxBufferSize {
+			logger.Printf("Type not found until buffer read exceeds %d bytes", maxBufferSize)
 			return Unknown, nil, err
 		}
 
