@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const defaultTimeout = uint(time.Duration(5000) * time.Millisecond)
+const defaultTimeout = uint(5000)
 
 // DetectImageType is the main function used to detect the type and size
 // of a remote image represented by the url.
